@@ -1,6 +1,6 @@
 FROM nginx:1.18.0
 
-LABEL description "A web server."
+LABEL description "Lambda web server."
 LABEL version "1.0.0"
 LABEL maintainer "Danilo Peixoto"
 

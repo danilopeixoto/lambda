@@ -67,7 +67,8 @@ services:
     restart: unless-stopped
   broker:
     image: confluentinc/cp-kafka:6.1.0
-    expose: '${BROKER_PORT}'
+    expose:
+      - '${BROKER_PORT}'
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${BROKER_HOSTNAME}:${BROKER_PORT}
@@ -106,7 +107,7 @@ secrets:
     file: 'secrets/database_password'
 
 volumes:
-  - database
+  database:
 
 networks:
-  - lambda
+  lambda:
