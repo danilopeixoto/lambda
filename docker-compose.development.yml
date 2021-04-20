@@ -1,0 +1,60 @@
+version: '3.5'
+
+services:
+  coordinator:
+    image: confluentinc/cp-zookeeper:6.1.0
+    expose:
+      - '${COORDINATOR_PORT}'
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=${COORDINATOR_PORT}
+    networks:
+      lambda:
+        aliases:
+          - ${COORDINATOR_HOSTNAME}
+    restart: unless-stopped
+  broker:
+    image: confluentinc/cp-kafka:6.1.0
+    ports:
+      - '${BROKER_PORT}:${BROKER_PORT}'
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${BROKER_HOSTNAME}:${BROKER_PORT}
+      - KAFKA_ZOOKEEPER_CONNECT=${COORDINATOR_HOSTNAME}:${COORDINATOR_PORT}
+    networks:
+      lambda:
+        aliases:
+          - ${BROKER_HOSTNAME}
+    depends_on:
+      - coordinator
+    restart: unless-stopped
+  database:
+    image: postgres:13.2
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER_FILE=${DATABASE_USERNAME_FILE}
+      - POSTGRES_PASSWORD_FILE=${DATABASE_PASSWORD_FILE}
+    secrets:
+      - database_username
+      - database_password
+    volumes:
+      - database:/var/lib/postgresql/data/
+    networks:
+      lambda:
+        aliases:
+          - ${DATABASE_HOSTNAME}
+    command: postgres --port=${DATABASE_PORT}
+    restart: unless-stopped
+
+secrets:
+  database_username:
+    file: 'secrets/database_username'
+  database_password:
+    file: 'secrets/database_password'
+
+volumes:
+  database:
+
+networks:
+  lambda:

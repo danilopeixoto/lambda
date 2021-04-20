@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active:
+      - development
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+  kafka:
+    producer:
+      bootstrap-servers: ${BROKER_HOSTNAME}:${BROKER_PORT}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  r2dbc:
+    driver-class-name: org.postgresql.Driver
+    url: r2dbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${secrets.DATABASE_USERNAME_FILE}
+    password: ${secrets.DATABASE_PASSWORD_FILE}
+
+server:
+  port: ${API_PORT}
+
+api:
+  version: ${API_VERSION}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: development
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  r2dbc:
+    driver-class-name: org.postgresql.Driver
+    url: r2dbc:postgresql://localhost:5432/database
+    username: administrator
+    password: dOBnM8nIwJGWRmK
+
+server:
+  port: 8080
+
+api:
+  version: v1
