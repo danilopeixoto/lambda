@@ -10,4 +10,4 @@ WORKDIR /usr/bin/api/
 
 EXPOSE 8080
 
-#CMD ["java", "-jar", "api.jar"]
+#CMD ["java", "-jar", "-Dspring.profiles.active=production", "api.jar"]
