@@ -4,42 +4,54 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 import io.r2dbc.postgresql.codec.Json;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("Execution")
 public class ExecutionModel {
   @Id
-  private final UUID id;
+  @Column("id")
+  private UUID id;
+
+  @Column("lambda_id")
   private final UUID lambdaID;
+
+  @Column("arguments")
   private final List<Json> arguments;
+
+  @Column("result")
   private final Json result;
+
+  @Column("log")
   private final String log;
+
+  @Column("status")
   private final StatusType status;
+
   @CreatedDate
-  private final Date createdAt;
+  @Column("created_at")
+  private Instant createdAt;
+
   @LastModifiedDate
-  private final Date updatedAt;
+  @Column("updated_at")
+  private Instant updatedAt;
 
   public ExecutionModel(
-      UUID id,
       UUID lambdaID,
       List<Json> arguments,
       Json result,
       String log,
-      StatusType status,
-      Date createdAt,
-      Date updatedAt) {
-    this.id = id;
+      StatusType status) {
     this.lambdaID = lambdaID;
     this.arguments = arguments;
     this.result = result;
     this.log = log;
     this.status = status;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   public UUID getID() {
@@ -66,11 +78,11 @@ public class ExecutionModel {
     return status;
   }
 
-  public Date getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public Date getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 }

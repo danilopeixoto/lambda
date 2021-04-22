@@ -4,6 +4,7 @@ import com.danilopeixoto.model.ExecutionModel;
 import com.danilopeixoto.repository.ExecutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,6 +31,7 @@ public class ExecutionService {
     return this.repository.findAll();
   }
 
+  @Transactional
   public Mono<ExecutionModel> delete(final UUID id) {
     return this.repository
       .findById(id)

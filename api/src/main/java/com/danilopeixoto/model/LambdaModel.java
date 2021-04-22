@@ -3,37 +3,45 @@ package com.danilopeixoto.model;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 public class LambdaModel {
   @Id
-  private final UUID id;
+  @Column("id")
+  private UUID id;
+
+  @Column("name")
   private final String name;
+
+  @Column("description")
   private final String description;
+
+  @Column("runtime")
   private final RuntimeType runtime;
+
+  @Column("source")
   private final String source;
+
+  @Column("created_at")
   @CreatedDate
-  private final Date createdAt;
+  private Instant createdAt;
+
+  @Column("updated_at")
   @LastModifiedDate
-  private final Date updatedAt;
+  private Instant updatedAt;
 
   public LambdaModel(
-      UUID id,
       String name,
       String description,
       RuntimeType runtime,
-      String source,
-      Date createdAt,
-      Date updatedAt) {
-    this.id = id;
+      String source) {
     this.name = name;
     this.description = description;
     this.runtime = runtime;
     this.source = source;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   public UUID getID() {
@@ -56,11 +64,11 @@ public class LambdaModel {
     return source;
   }
 
-  public Date getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public Date getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 }

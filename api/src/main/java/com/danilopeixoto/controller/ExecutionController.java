@@ -16,26 +16,25 @@ public class ExecutionController {
   @Autowired
   private ExecutionService service;
 
-  @PostMapping
-  public Mono<ExecutionModel> create(@RequestBody Mono<ExecutionModel> execution) {
-    return execution.flatMap(this.service::create);
-  }
-
   @GetMapping("/{id}")
   public Mono<ResponseEntity<ExecutionModel>> get(@PathVariable UUID id) {
-    return this.service.get(id)
+    return this.service
+      .get(id)
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   @GetMapping
   public Flux<ExecutionModel> find(@RequestParam(value = "lambdaID", required = false) UUID lambdaID) {
-    return lambdaID != null ? this.service.find(lambdaID) : this.service.list();
+    return lambdaID != null ?
+      this.service.find(lambdaID) :
+      this.service.list();
   }
 
   @DeleteMapping("/{id}")
   public Mono<ResponseEntity<ExecutionModel>> delete(@PathVariable UUID id) {
-    return this.service.delete(id)
+    return this.service
+      .delete(id)
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());
   }
