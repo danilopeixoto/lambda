@@ -17,6 +17,8 @@ server:
 
 api:
   version: v1
+  java-worker-topic-name: java_worker_topic
+  partitions-per-topic: 10
 
 springdoc:
   api-docs:

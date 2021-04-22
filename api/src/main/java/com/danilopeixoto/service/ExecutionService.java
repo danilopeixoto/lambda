@@ -51,6 +51,6 @@ public class ExecutionService {
       .findById(id)
       .flatMap(lambda -> this.repository
         .deleteById(id)
-        .then(Mono.just(lambda)));
+        .thenReturn(lambda));
   }
 }

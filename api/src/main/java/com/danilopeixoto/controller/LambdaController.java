@@ -4,6 +4,7 @@ import com.danilopeixoto.model.ExecutionModel;
 import com.danilopeixoto.model.ExecutionRequest;
 import com.danilopeixoto.model.LambdaModel;
 import com.danilopeixoto.model.LambdaRequest;
+import com.danilopeixoto.service.ExecutionProducer;
 import com.danilopeixoto.service.ExecutionService;
 import com.danilopeixoto.service.LambdaService;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,9 @@ public class LambdaController {
 
   @Autowired
   private ExecutionService executionService;
+
+  @Autowired
+  private ExecutionProducer executionProducer;
 
   @Autowired
   private ModelMapper mapper;
@@ -78,6 +82,7 @@ public class LambdaController {
     return this.lambdaService
       .execute(id, executionRequest)
       .flatMap(this.executionService::create)
+      .flatMap(this.executionProducer::enqueue)
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());
   }

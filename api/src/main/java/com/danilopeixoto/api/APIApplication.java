@@ -1,16 +1,20 @@
 package com.danilopeixoto.api;
 
+import com.danilopeixoto.configuration.APIConfiguration;
 import io.r2dbc.spi.ConnectionFactory;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 
@@ -26,6 +30,9 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
       url = "https://github.com/danilopeixoto/lambda")))
 @SpringBootApplication
 public class APIApplication {
+  @Autowired
+  private APIConfiguration configuration;
+
   public static void main(String[] args) {
     SpringApplication.run(APIApplication.class, args);
   }
@@ -39,6 +46,14 @@ public class APIApplication {
       .setPropertyCondition(Conditions.isNotNull());
 
     return modelMapper;
+  }
+
+  @Bean
+  public NewTopic javaWorkerTopic() {
+    return TopicBuilder
+      .name(this.configuration.getJavaWorkerTopicName())
+      .partitions(this.configuration.getPartitionsPerTopic())
+      .build();
   }
 
   @Bean
