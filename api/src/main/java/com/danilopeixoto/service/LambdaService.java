@@ -6,6 +6,7 @@ import com.danilopeixoto.model.LambdaModel;
 import com.danilopeixoto.model.StatusType;
 import com.danilopeixoto.repository.LambdaRepository;
 import io.r2dbc.postgresql.codec.Json;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,9 @@ import java.util.UUID;
 public class LambdaService {
   @Autowired
   private LambdaRepository repository;
+
+  @Autowired
+  private ModelMapper mapper;
 
   public Mono<LambdaModel> create(final LambdaModel lambda) {
     return this.repository.save(lambda);
@@ -33,6 +37,16 @@ public class LambdaService {
 
   public Flux<LambdaModel> list() {
     return this.repository.findAll();
+  }
+
+  @Transactional
+  public Mono<LambdaModel> update(final UUID id, final LambdaModel lambda) {
+    return this.repository
+      .findById(id)
+      .flatMap(newLambda -> {
+        this.mapper.map(lambda, newLambda);
+        return this.repository.save(newLambda);
+      });
   }
 
   @Transactional

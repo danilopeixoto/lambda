@@ -14,16 +14,16 @@ public class LambdaModel {
   private UUID id;
 
   @Column("name")
-  private final String name;
+  private String name;
 
   @Column("description")
-  private final String description;
+  private String description;
 
   @Column("runtime")
-  private final RuntimeType runtime;
+  private RuntimeType runtime;
 
   @Column("source")
-  private final String source;
+  private String source;
 
   @Column("created_at")
   @CreatedDate
@@ -41,6 +41,22 @@ public class LambdaModel {
     this.name = name;
     this.description = description;
     this.runtime = runtime;
+    this.source = source;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setRuntime(RuntimeType runtime) {
+    this.runtime = runtime;
+  }
+
+  public void setSource(String source) {
     this.source = source;
   }
 

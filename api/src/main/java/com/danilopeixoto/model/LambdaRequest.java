@@ -1,10 +1,19 @@
 package com.danilopeixoto.model;
 
+import javax.validation.constraints.NotEmpty;
+
 public class LambdaRequest {
-  private final String name;
-  private final String description;
-  private final RuntimeType runtime;
-  private final String source;
+  @NotEmpty
+  private String name;
+
+  @NotEmpty
+  private String description;
+
+  @NotEmpty
+  private RuntimeType runtime;
+
+  @NotEmpty
+  private String source;
 
   public LambdaRequest(
     String name,
@@ -14,6 +23,22 @@ public class LambdaRequest {
     this.name = name;
     this.description = description;
     this.runtime = runtime;
+    this.source = source;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setRuntime(RuntimeType runtime) {
+    this.runtime = runtime;
+  }
+
+  public void setSource(String source) {
     this.source = source;
   }
 

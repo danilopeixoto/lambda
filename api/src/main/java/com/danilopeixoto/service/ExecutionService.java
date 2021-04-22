@@ -2,6 +2,7 @@ package com.danilopeixoto.service;
 
 import com.danilopeixoto.model.ExecutionModel;
 import com.danilopeixoto.repository.ExecutionRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,9 @@ import java.util.UUID;
 public class ExecutionService {
   @Autowired
   private ExecutionRepository repository;
+
+  @Autowired
+  private ModelMapper mapper;
 
   public Mono<ExecutionModel> create(final ExecutionModel execution) {
     return this.repository.save(execution);
@@ -29,6 +33,16 @@ public class ExecutionService {
 
   public Flux<ExecutionModel> list() {
     return this.repository.findAll();
+  }
+
+  @Transactional
+  public Mono<ExecutionModel> update(final UUID id, final ExecutionModel execution) {
+    return this.repository
+      .findById(id)
+      .flatMap(newExecution -> {
+        this.mapper.map(execution, newExecution);
+        return this.repository.save(newExecution);
+      });
   }
 
   @Transactional

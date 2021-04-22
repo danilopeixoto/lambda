@@ -2,10 +2,17 @@ package com.danilopeixoto.model;
 
 import io.r2dbc.postgresql.codec.Json;
 
+import javax.validation.constraints.NotEmpty;
+
 public class ExecutionUpdateRequest {
-  private final Json result;
-  private final String log;
-  private final StatusType status;
+  @NotEmpty
+  private Json result;
+
+  @NotEmpty
+  private String log;
+
+  @NotEmpty
+  private StatusType status;
 
   public ExecutionUpdateRequest(
     Json result,
@@ -13,6 +20,18 @@ public class ExecutionUpdateRequest {
     StatusType status) {
     this.result = result;
     this.log = log;
+    this.status = status;
+  }
+
+  public void setResult(Json result) {
+    this.result = result;
+  }
+
+  public void setLog(String log) {
+    this.log = log;
+  }
+
+  public void setStatus(StatusType status) {
     this.status = status;
   }
 

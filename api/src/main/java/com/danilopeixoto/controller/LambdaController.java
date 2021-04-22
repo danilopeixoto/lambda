@@ -9,12 +9,15 @@ import com.danilopeixoto.service.LambdaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
+@Validated
 @RestController
 @RequestMapping("/lambda")
 public class LambdaController {
@@ -25,12 +28,12 @@ public class LambdaController {
   private ExecutionService executionService;
 
   @Autowired
-  private ModelMapper modelMapper;
+  private ModelMapper mapper;
 
   @PostMapping
-  public Mono<LambdaModel> create(@RequestBody Mono<LambdaRequest> lambdaRequest) {
+  public Mono<LambdaModel> create(@Valid @RequestBody Mono<LambdaRequest> lambdaRequest) {
     return lambdaRequest
-      .map(request -> this.modelMapper.map(request, LambdaModel.class))
+      .map(request -> this.mapper.map(request, LambdaModel.class))
       .flatMap(this.lambdaService::create);
   }
 
@@ -49,6 +52,17 @@ public class LambdaController {
       this.lambdaService.list();
   }
 
+  @PutMapping("/{id}")
+  public Mono<ResponseEntity<LambdaModel>> update(
+    @PathVariable UUID id,
+    @Valid @RequestBody Mono<LambdaRequest> lambdaUpdateRequest) {
+    return lambdaUpdateRequest
+      .map(request -> this.mapper.map(request, LambdaModel.class))
+      .flatMap(lambda -> this.lambdaService.update(id, lambda))
+      .map(ResponseEntity::ok)
+      .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
+
   @DeleteMapping("/{id}")
   public Mono<ResponseEntity<LambdaModel>> delete(@PathVariable UUID id) {
     return this.lambdaService
@@ -60,10 +74,10 @@ public class LambdaController {
   @PostMapping("/{id}/execution")
   public Mono<ResponseEntity<ExecutionModel>> execute(
     @PathVariable UUID id,
-    @RequestBody Mono<ExecutionRequest> executionRequest) {
+    @Valid @RequestBody Mono<ExecutionRequest> executionRequest) {
     return this.lambdaService
       .execute(id, executionRequest)
-      .flatMap(execution -> this.executionService.create(execution))
+      .flatMap(this.executionService::create)
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());
   }

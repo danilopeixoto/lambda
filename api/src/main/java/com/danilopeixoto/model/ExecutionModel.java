@@ -18,19 +18,19 @@ public class ExecutionModel {
   private UUID id;
 
   @Column("lambda_id")
-  private final UUID lambdaID;
+  private UUID lambdaID;
 
   @Column("arguments")
-  private final List<Json> arguments;
+  private List<Json> arguments;
 
   @Column("result")
-  private final Json result;
+  private Json result;
 
   @Column("log")
-  private final String log;
+  private String log;
 
   @Column("status")
-  private final StatusType status;
+  private StatusType status;
 
   @CreatedDate
   @Column("created_at")
@@ -50,6 +50,26 @@ public class ExecutionModel {
     this.arguments = arguments;
     this.result = result;
     this.log = log;
+    this.status = status;
+  }
+
+  public void setLambdaID(UUID lambdaID) {
+    this.lambdaID = lambdaID;
+  }
+
+  public void setArguments(List<Json> arguments) {
+    this.arguments = arguments;
+  }
+
+  public void setResult(Json result) {
+    this.result = result;
+  }
+
+  public void setLog(String log) {
+    this.log = log;
+  }
+
+  public void setStatus(StatusType status) {
     this.status = status;
   }
 
