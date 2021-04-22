@@ -1,16 +1,15 @@
 package com.danilopeixoto.model;
 
+import io.r2dbc.postgresql.codec.Json;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-
-import io.r2dbc.postgresql.codec.Json;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Table("Execution")
 public class ExecutionModel {
@@ -42,11 +41,11 @@ public class ExecutionModel {
   private Instant updatedAt;
 
   public ExecutionModel(
-      UUID lambdaID,
-      List<Json> arguments,
-      Json result,
-      String log,
-      StatusType status) {
+    UUID lambdaID,
+    List<Json> arguments,
+    Json result,
+    String log,
+    StatusType status) {
     this.lambdaID = lambdaID;
     this.arguments = arguments;
     this.result = result;

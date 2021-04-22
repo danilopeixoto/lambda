@@ -20,7 +20,7 @@ docker-compose up -d
 Check the API reference for models and routes:
 
 ```
-http://localhost:8000/v1/docs/
+http://localhost:8000/api/v1/docs
 ```
 
 The hostname and port of the server are defined by the `.env` file in the project root directory.

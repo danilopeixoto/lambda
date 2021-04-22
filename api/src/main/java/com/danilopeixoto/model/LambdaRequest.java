@@ -7,10 +7,10 @@ public class LambdaRequest {
   private final String source;
 
   public LambdaRequest(
-      String name,
-      String description,
-      RuntimeType runtime,
-      String source) {
+    String name,
+    String description,
+    RuntimeType runtime,
+    String source) {
     this.name = name;
     this.description = description;
     this.runtime = runtime;

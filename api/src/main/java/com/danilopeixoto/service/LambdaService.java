@@ -54,7 +54,7 @@ public class LambdaService {
           Json.of("null"),
           "",
           StatusType.Ready
-        )):
+        )) :
         Mono.empty());
   }
 }

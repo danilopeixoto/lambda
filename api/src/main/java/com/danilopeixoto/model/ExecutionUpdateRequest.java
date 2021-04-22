@@ -8,9 +8,9 @@ public class ExecutionUpdateRequest {
   private final StatusType status;
 
   public ExecutionUpdateRequest(
-      Json result,
-      String log,
-      StatusType status) {
+    Json result,
+    String log,
+    StatusType status) {
     this.result = result;
     this.log = log;
     this.status = status;

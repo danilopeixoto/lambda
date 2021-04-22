@@ -1,0 +1,25 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  r2dbc:
+    driver-class-name: org.postgresql.Driver
+    url: r2dbc:postgresql://localhost:5432/database
+    username: administrator
+    password: dOBnM8nIwJGWRmK
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+api:
+  version: v1
+
+springdoc:
+  api-docs:
+    path: /docs
+  swagger-ui:
+    path: /docs/index.html
