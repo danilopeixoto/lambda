@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface LambdaRepository extends ReactiveCrudRepository<LambdaModel, UUID> {
-  @Query("select * from Lambda where name = :name")
+  @Query("select * from lambda where name = :name")
   Flux<LambdaModel> findByName(String name);
 }

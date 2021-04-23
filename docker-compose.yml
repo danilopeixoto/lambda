@@ -43,7 +43,7 @@ services:
       - database
     restart: unless-stopped
   java_worker:
-    build: java_worker/
+    build: java-worker/
     environment:
       - API_HOSTNAME
       - API_PORT

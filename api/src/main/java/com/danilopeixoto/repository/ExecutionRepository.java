@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface ExecutionRepository extends ReactiveCrudRepository<ExecutionModel, UUID> {
-  @Query("select * from Execution where lambdaID = :lambdaID")
+  @Query("select * from execution where lambda_id = :lambdaID")
   Flux<ExecutionModel> findByLambdaID(UUID lambdaID);
 }

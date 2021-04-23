@@ -1,34 +1,34 @@
-CREATE EXTENSION IF NOT EXISTS 'uuid-ossp';
+create extension if not exists 'uuid-ossp';
 
-CREATE TYPE IF NOT EXISTS runtime_type AS ENUM('Java');
-CREATE TYPE IF NOT EXISTS status_type AS ENUM('Ready', 'Done', 'Error');
+create type if not exists runtime_type as enum('Java');
+create type if not exists status_type as enum('Ready', 'Done', 'Error');
 
-CREATE INDEX IF NOT EXISTS lambda_name_index ON Lambda (name);
-CREATE INDEX IF NOT EXISTS execution_lambda_id_index ON Execution (lambda_id);
+create index if not exists lambda_name_index on lambda (name);
+create index if not exists execution_lambda_id_index on execution (lambda_id);
 
-CREATE TABLE IF NOT EXISTS Lambda (
-  id uuid DEFAULT uuid_generate_v4(),
-  name text NOT NULL,
-  description text NOT NULL,
-  runtime runtime_type NOT NULL,
-  source text NOT NULL,
-  created_at timestamp NOT NULL,
-  updated_at timestamp NOT NULL,
-  CONSTRAINT lambda_pk_constraint PRIMARY KEY (id)
+create table if not exists lambda (
+  id uuid default uuid_generate_v4(),
+  name text unique not null,
+  description text not null,
+  runtime runtime_type not null,
+  source text not null,
+  created_at timestamp not null,
+  updated_at timestamp not null,
+  constraint lambda_pk_constraint primary key (id)
 );
 
-CREATE TABLE IF NOT EXISTS Execution (
-  id uuid DEFAULT uuid_generate_v4(),
-  lambda_id uuid NOT NULL,
-  arguments jsonb[] NOT NULL,
-  result jsonb NOT NULL,
-  log text NOT NULL,
-  status status_type NOT NULL,
-  created_at timestamp NOT NULL,
-  updated_at timestamp NOT NULL,
-  CONSTRAINT execution_pk_constraint PRIMARY KEY (id),
-  CONSTRAINT execution_lambda_id_fk_constraint
-    FOREIGN KEY (lambda_id)
-    REFERENCES Lambda(id)
-    ON DELETE CASCADE
+create table if not exists execution (
+  id uuid default uuid_generate_v4(),
+  lambda_id uuid not null,
+  arguments jsonb[] not null,
+  result jsonb not null,
+  log text not null,
+  status status_type not null,
+  created_at timestamp not null,
+  updated_at timestamp not null,
+  constraint execution_pk_constraint primary key (id),
+  constraint execution_lambda_id_fk_constraint
+    foreign key (lambda_id)
+    references lambda (id)
+    on delete cascade
 );

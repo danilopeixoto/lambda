@@ -58,17 +58,18 @@ public class LambdaService {
         .then(Mono.just(lambda)));
   }
 
-  public Mono<ExecutionModel> execute(final UUID id, final Mono<ExecutionRequest> executionRequest) {
-    return this.repository
-      .existsById(id)
-      .flatMap(hasLambda -> hasLambda ?
-        executionRequest.map(request -> new ExecutionModel(
-          id,
-          request.getArguments(),
-          Json.of("null"),
-          "",
-          StatusType.Ready
-        )) :
-        Mono.empty());
+  public Mono<ExecutionModel> execute(final Mono<ExecutionRequest> executionRequest) {
+    return executionRequest
+      .flatMap(request -> this.repository
+        .findByName(request.getLambdaName())
+        .singleOrEmpty()
+        .zipWith(executionRequest))
+      .map(result -> new ExecutionModel(
+        result.getT1().getID(),
+        result.getT2().getArguments(),
+        Json.of("null"),
+        "",
+        StatusType.Ready
+      ));
   }
 }

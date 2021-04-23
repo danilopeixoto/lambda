@@ -1,18 +1,24 @@
 package com.danilopeixoto.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotEmpty;
 
 public class LambdaRequest {
   @NotEmpty
+  @JsonProperty("name")
   private String name;
 
   @NotEmpty
+  @JsonProperty("description")
   private String description;
 
   @NotEmpty
+  @JsonProperty("runtime")
   private RuntimeType runtime;
 
   @NotEmpty
+  @JsonProperty("source")
   private String source;
 
   public LambdaRequest(
@@ -43,18 +49,18 @@ public class LambdaRequest {
   }
 
   public String getName() {
-    return name;
+    return this.name;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
   }
 
   public RuntimeType getRuntime() {
-    return runtime;
+    return this.runtime;
   }
 
   public String getSource() {
-    return source;
+    return this.source;
   }
 }

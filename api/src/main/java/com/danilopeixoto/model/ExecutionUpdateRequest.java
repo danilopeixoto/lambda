@@ -1,17 +1,21 @@
 package com.danilopeixoto.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.r2dbc.postgresql.codec.Json;
 
 import javax.validation.constraints.NotEmpty;
 
 public class ExecutionUpdateRequest {
   @NotEmpty
+  @JsonProperty("result")
   private Json result;
 
   @NotEmpty
+  @JsonProperty("log")
   private String log;
 
   @NotEmpty
+  @JsonProperty("status")
   private StatusType status;
 
   public ExecutionUpdateRequest(
@@ -36,14 +40,14 @@ public class ExecutionUpdateRequest {
   }
 
   public Json getResult() {
-    return result;
+    return this.result;
   }
 
   public String getLog() {
-    return log;
+    return this.log;
   }
 
   public StatusType getStatus() {
-    return status;
+    return this.status;
   }
 }

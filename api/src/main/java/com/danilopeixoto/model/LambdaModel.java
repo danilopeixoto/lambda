@@ -1,5 +1,6 @@
 package com.danilopeixoto.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,26 +12,33 @@ import java.util.UUID;
 public class LambdaModel {
   @Id
   @Column("id")
+  @JsonProperty("id")
   private UUID id;
 
   @Column("name")
+  @JsonProperty("name")
   private String name;
 
   @Column("description")
+  @JsonProperty("description")
   private String description;
 
   @Column("runtime")
+  @JsonProperty("runtime")
   private RuntimeType runtime;
 
   @Column("source")
+  @JsonProperty("source")
   private String source;
 
-  @Column("created_at")
   @CreatedDate
+  @Column("created_at")
+  @JsonProperty("created_at")
   private Instant createdAt;
 
-  @Column("updated_at")
   @LastModifiedDate
+  @Column("updated_at")
+  @JsonProperty("updated_at")
   private Instant updatedAt;
 
   public LambdaModel(
@@ -61,30 +69,30 @@ public class LambdaModel {
   }
 
   public UUID getID() {
-    return id;
+    return this.id;
   }
 
   public String getName() {
-    return name;
+    return this.name;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
   }
 
   public RuntimeType getRuntime() {
-    return runtime;
+    return this.runtime;
   }
 
   public String getSource() {
-    return source;
+    return this.source;
   }
 
   public Instant getCreatedAt() {
-    return createdAt;
+    return this.createdAt;
   }
 
   public Instant getUpdatedAt() {
-    return updatedAt;
+    return this.updatedAt;
   }
 }

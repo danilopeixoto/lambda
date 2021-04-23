@@ -23,15 +23,50 @@ Create a lambda:
 POST http://localhost:8000/api/v1/lambda
 ```
 
-Body:
+Request body:
 
 ```json
 {
   "name": "add",
-  "description": "Add two floats and return sum.",
-  "runtime": "Java",
-
+  "description": "Add numbers.",
+  "runtime": "java",
+  "source": "<sample>"
 }
+```
+
+Source code sample:
+
+```java
+import java.util.List;
+
+public class AddLambda {
+  public static Number compute(List<Number> numbers) {
+    return numbers
+      .stream()
+      .reduce(0, (a, b) -> a.doubleValue() + b.doubleValue());
+  }
+}
+```
+
+Execute lambda:
+
+```
+POST http://localhost:8000/api/v1/execution
+```
+
+Request body:
+
+```json
+{
+  "lambda_name": "add",
+  "arguments": "[[0, 1, 2, 3, 4, 5]]"
+}
+```
+
+Query executions:
+
+```
+GET http://localhost:8000/api/v1/execution?lambdaID=<id>
 ```
 
 ## Documentation

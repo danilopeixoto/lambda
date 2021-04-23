@@ -1,5 +1,6 @@
 package com.danilopeixoto.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.r2dbc.postgresql.codec.Json;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -15,29 +16,37 @@ import java.util.UUID;
 public class ExecutionModel {
   @Id
   @Column("id")
+  @JsonProperty("id")
   private UUID id;
 
   @Column("lambda_id")
+  @JsonProperty("lambda_id")
   private UUID lambdaID;
 
   @Column("arguments")
+  @JsonProperty("arguments")
   private List<Json> arguments;
 
   @Column("result")
+  @JsonProperty("result")
   private Json result;
 
   @Column("log")
+  @JsonProperty("log")
   private String log;
 
   @Column("status")
+  @JsonProperty("status")
   private StatusType status;
 
   @CreatedDate
   @Column("created_at")
+  @JsonProperty("created_at")
   private Instant createdAt;
 
   @LastModifiedDate
   @Column("updated_at")
+  @JsonProperty("updated_at")
   private Instant updatedAt;
 
   public ExecutionModel(
@@ -74,34 +83,34 @@ public class ExecutionModel {
   }
 
   public UUID getID() {
-    return id;
+    return this.id;
   }
 
   public UUID getLambdaID() {
-    return lambdaID;
+    return this.lambdaID;
   }
 
   public List<Json> getArguments() {
-    return arguments;
+    return this.arguments;
   }
 
   public Json getResult() {
-    return result;
+    return this.result;
   }
 
   public String getLog() {
-    return log;
+    return this.log;
   }
 
   public StatusType getStatus() {
-    return status;
+    return this.status;
   }
 
   public Instant getCreatedAt() {
-    return createdAt;
+    return this.createdAt;
   }
 
   public Instant getUpdatedAt() {
-    return updatedAt;
+    return this.updatedAt;
   }
 }
