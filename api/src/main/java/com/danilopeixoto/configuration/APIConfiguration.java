@@ -29,6 +29,18 @@ public class APIConfiguration {
     this.partitionsPerTopic = partitionsPerTopic;
   }
 
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setJavaWorkerTopicName(String javaWorkerTopicName) {
+    this.javaWorkerTopicName = javaWorkerTopicName;
+  }
+
+  public void setPartitionsPerTopic(int partitionsPerTopic) {
+    this.partitionsPerTopic = partitionsPerTopic;
+  }
+
   public String getVersion() {
     return version;
   }

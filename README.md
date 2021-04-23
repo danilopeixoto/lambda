@@ -15,6 +15,25 @@ Build and run service:
 docker-compose up -d
 ```
 
+## Usage
+
+Create a lambda:
+
+```
+POST http://localhost:8000/api/v1/lambda
+```
+
+Body:
+
+```json
+{
+  "name": "add",
+  "description": "Add two floats and return sum.",
+  "runtime": "Java",
+
+}
+```
+
 ## Documentation
 
 Check the API reference for models and routes:
