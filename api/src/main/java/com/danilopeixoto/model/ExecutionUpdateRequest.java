@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.r2dbc.postgresql.codec.Json;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class ExecutionUpdateRequest {
-  @NotEmpty
+  @NotNull
   @JsonProperty("result")
   private Json result;
 
-  @NotEmpty
+  @NotNull
   @JsonProperty("log")
   private String log;
 

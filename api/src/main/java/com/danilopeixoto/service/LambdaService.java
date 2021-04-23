@@ -67,7 +67,7 @@ public class LambdaService {
       .map(result -> new ExecutionModel(
         result.getT1().getID(),
         result.getT2().getArguments(),
-        Json.of("null"),
+        Json.of(""),
         "",
         StatusType.Ready
       ));

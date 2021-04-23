@@ -3,11 +3,12 @@ package com.danilopeixoto.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.r2dbc.postgresql.codec.Json;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class ExecutionRequest {
-  @NotNull
+  @NotEmpty
   @JsonProperty("lambda_name")
   private String lambdaName;
 
