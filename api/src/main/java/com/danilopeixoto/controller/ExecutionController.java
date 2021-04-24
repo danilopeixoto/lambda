@@ -37,8 +37,8 @@ public class ExecutionController {
   @PostMapping
   public Mono<ResponseEntity<ExecutionModel>> create(
     @Valid @RequestBody Mono<ExecutionRequest> executionRequest) {
-    return this.lambdaService
-      .execute(executionRequest)
+    return executionRequest
+      .flatMap(this.lambdaService::execute)
       .flatMap(this.executionService::create)
       .flatMap(this.executionProducer::enqueue)
       .map(ResponseEntity::ok)

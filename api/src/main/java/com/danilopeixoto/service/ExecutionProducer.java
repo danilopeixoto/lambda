@@ -15,7 +15,7 @@ public class ExecutionProducer {
   @Autowired
   private ReactiveKafkaProducerTemplate<String, ExecutionModel> template;
 
-  public Mono<ExecutionModel> enqueue(ExecutionModel execution) {
+  public Mono<ExecutionModel> enqueue(final ExecutionModel execution) {
     return this.template
       .send(this.configuration.getJavaWorkerTopicName(), execution)
       .thenReturn(execution);

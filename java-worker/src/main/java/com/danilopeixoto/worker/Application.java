@@ -1,11 +1,11 @@
-package com.danilopeixoto.api;
+package com.danilopeixoto.worker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class APIApplication {
+public class Application {
   public static void main(String[] args) {
-    SpringApplication.run(APIApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 }

@@ -1,10 +1,11 @@
-package com.danilopeixoto.java_worker;
+package com.danilopeixoto.worker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JavaWorkerApplicationTests {
-	@Test
-	void contextLoads() {}
+class ApplicationTests {
+  @Test
+  void contextLoads() {
+  }
 }

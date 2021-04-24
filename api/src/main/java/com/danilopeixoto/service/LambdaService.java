@@ -58,12 +58,11 @@ public class LambdaService {
         .then(Mono.just(lambda)));
   }
 
-  public Mono<ExecutionModel> execute(final Mono<ExecutionRequest> executionRequest) {
-    return executionRequest
-      .flatMap(request -> this.repository
-        .findByName(request.getLambdaName())
-        .singleOrEmpty()
-        .zipWith(executionRequest))
+  public Mono<ExecutionModel> execute(final ExecutionRequest executionRequest) {
+    return this.repository
+      .findByName(executionRequest.getLambdaName())
+      .singleOrEmpty()
+      .zipWith(Mono.just(executionRequest))
       .map(result -> new ExecutionModel(
         result.getT1().getID(),
         result.getT2().getArguments(),
