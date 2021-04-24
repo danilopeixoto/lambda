@@ -27,7 +27,7 @@ public class ExecutionService {
     final ExecutionUpdateRequest executionUpdateRequest) {
     return this.client
       .put()
-      .uri("/execution/" + id)
+      .uri("/execution/" + id.toString())
       .body(Mono.just(executionUpdateRequest), ExecutionUpdateRequest.class)
       .retrieve()
       .bodyToMono(ExecutionModel.class);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Mono;
 
 @Controller
 public class ExecutionController implements ApplicationRunner {
@@ -23,8 +24,9 @@ public class ExecutionController implements ApplicationRunner {
   public void run(ApplicationArguments args) throws Exception {
     this.executionConsumer
       .dequeue()
-      .flatMap(execution -> this.executionService
-        .get(execution.getID())
+      .flatMap(execution -> this.executionService.get(execution.getID()))
+      .flatMap(execution -> Mono
+        .just(execution)
         .zipWith(this.lambdaService.get(execution.getLambdaID())))
       .flatMap(result -> this.lambdaService.execute(result.getT1(), result.getT2()))
       .flatMap(result -> this.executionService.update(result.getT1(), result.getT2()))
