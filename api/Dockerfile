@@ -6,8 +6,8 @@ LABEL maintainer "Danilo Peixoto"
 
 WORKDIR /usr/bin/api/
 
-#COPY build/api.jar .
+COPY build/api.jar .
 
 EXPOSE 8080
 
-#CMD ["java", "-jar", "-Dspring.profiles.active=production", "api.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=production", "api.jar"]

@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+api:
+  hostname: localhost
+  port: 8080
+  version: v1
+  topic-name: worker_topic

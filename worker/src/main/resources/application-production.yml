@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: ${BROKER_HOSTNAME}:${BROKER_PORT}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+api:
+  hostname: ${API_HOSTNAME}
+  port: ${API_PORT}
+  version: ${API_VERSION}
+  topic-name: ${API_TOPIC_NAME}

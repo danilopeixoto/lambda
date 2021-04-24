@@ -22,8 +22,8 @@ services:
     environment:
       - API_PORT
       - API_VERSION
-      - API_JAVA_WORKER_TOPIC_NAME
-      - API_PARTITIONS_PER_TOPIC
+      - API_TOPIC_NAME
+      - API_TOPIC_PARTITIONS
       - BROKER_HOSTNAME
       - BROKER_PORT
       - DATABASE_HOSTNAME
@@ -42,13 +42,13 @@ services:
       - broker
       - database
     restart: unless-stopped
-  java_worker:
-    build: java-worker/
+  worker:
+    build: worker/
     environment:
       - API_HOSTNAME
       - API_PORT
       - API_VERSION
-      - API_JAVA_WORKER_TOPIC_NAME
+      - API_TOPIC_NAME
       - BROKER_HOSTNAME
       - BROKER_PORT
     networks:

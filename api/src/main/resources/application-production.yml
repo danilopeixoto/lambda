@@ -17,8 +17,8 @@ server:
 
 api:
   version: ${API_VERSION}
-  java-worker-topic-name: ${API_JAVA_WORKER_TOPIC_NAME}
-  partitions-per-topic: ${API_PARTITIONS_PER_TOPIC}
+  topic-name: ${API_TOPIC_NAME}
+  topic-partitions: ${API_TOPIC_PARTITIONS}
 
 springdoc:
   api-docs:
