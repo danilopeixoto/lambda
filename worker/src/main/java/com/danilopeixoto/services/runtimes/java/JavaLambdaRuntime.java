@@ -48,7 +48,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
     });
   }
 
-  private String getMainClassName(String source) {
+  private String getMainClassName(final String source) {
     String className = Strings.EMPTY;
     CompilationUnit compilationUnit = StaticJavaParser.parse(source);
 
@@ -57,7 +57,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
     return className;
   }
 
-  private List<Object> argumentToInputs(List<JsonNode> arguments) throws IllegalArgumentException {
+  private List<Object> argumentToInputs(final List<JsonNode> arguments) throws IllegalArgumentException {
     return arguments
       .stream()
       .map(argument -> {
@@ -70,7 +70,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
       .collect(Collectors.toList());
   }
 
-  private List<Class<?>> getMethodSignature(List<Object> inputs) {
+  private List<Class<?>> getMethodSignature(final List<Object> inputs) {
     return inputs
       .stream()
       .map(Object::getClass)
@@ -78,10 +78,10 @@ public class JavaLambdaRuntime implements LambdaRuntime {
   }
 
   private Method getEntrypointMethod(
-    ClassLoader classLoader,
-    String className,
-    List<Class<?>> methodSignature,
-    List<Object> inputs) throws ClassNotFoundException, NoSuchMethodException {
+    final ClassLoader classLoader,
+    final String className,
+    final List<Class<?>> methodSignature,
+    final List<Object> inputs) throws ClassNotFoundException, NoSuchMethodException {
     return Arrays
       .stream(Class
         .forName(className, true, classLoader)
@@ -106,9 +106,9 @@ public class JavaLambdaRuntime implements LambdaRuntime {
       ));
   }
 
-  private JavaFileObject buildFile(String mainClassName, String source) {
+  private JavaFileObject buildFile(final String className, final String source) {
     return new SimpleJavaFileObject(
-      URI.create("string:///" + mainClassName + JavaFileObject.Kind.SOURCE.extension),
+      URI.create("string:///" + className + JavaFileObject.Kind.SOURCE.extension),
       JavaFileObject.Kind.SOURCE) {
       @Override
       public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
@@ -117,7 +117,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
     };
   }
 
-  private JavaCompiler.CompilationTask compile(JavaFileObject file) {
+  private JavaCompiler.CompilationTask compile(final JavaFileObject file) {
     return compiler.getTask(
       null,
       null,
