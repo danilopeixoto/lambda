@@ -1,7 +1,7 @@
 package com.danilopeixoto.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.r2dbc.postgresql.codec.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,10 +15,10 @@ public class ExecutionModel {
   private UUID lambdaID;
 
   @JsonProperty("arguments")
-  private List<Json> arguments;
+  private List<JsonNode> arguments;
 
   @JsonProperty("result")
-  private Json result;
+  private JsonNode result;
 
   @JsonProperty("log")
   private String log;
@@ -34,8 +34,8 @@ public class ExecutionModel {
 
   public ExecutionModel(
     UUID lambdaID,
-    List<Json> arguments,
-    Json result,
+    List<JsonNode> arguments,
+    JsonNode result,
     String log,
     StatusType status) {
     this.lambdaID = lambdaID;
@@ -49,11 +49,11 @@ public class ExecutionModel {
     this.lambdaID = lambdaID;
   }
 
-  public void setArguments(List<Json> arguments) {
+  public void setArguments(List<JsonNode> arguments) {
     this.arguments = arguments;
   }
 
-  public void setResult(Json result) {
+  public void setResult(JsonNode result) {
     this.result = result;
   }
 
@@ -73,11 +73,11 @@ public class ExecutionModel {
     return this.lambdaID;
   }
 
-  public List<Json> getArguments() {
+  public List<JsonNode> getArguments() {
     return this.arguments;
   }
 
-  public Json getResult() {
+  public JsonNode getResult() {
     return this.result;
   }
 

@@ -32,7 +32,7 @@ public class ExecutionController {
   private ExecutionProducer executionProducer;
 
   @Autowired
-  private ModelMapper mapper;
+  private ModelMapper modelMapper;
 
   @PostMapping
   public Mono<ResponseEntity<ExecutionModel>> create(
@@ -68,7 +68,7 @@ public class ExecutionController {
     @PathVariable UUID id,
     @Valid @RequestBody Mono<ExecutionUpdateRequest> executionUpdateRequest) {
     return executionUpdateRequest
-      .map(request -> this.mapper.map(request, ExecutionModel.class))
+      .map(request -> this.modelMapper.map(request, ExecutionModel.class))
       .flatMap(execution -> this.executionService.update(id, execution))
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());

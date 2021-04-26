@@ -1,7 +1,7 @@
 package com.danilopeixoto.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.r2dbc.postgresql.codec.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,9 +14,9 @@ public class ExecutionRequest {
 
   @NotNull
   @JsonProperty("arguments")
-  private List<Json> arguments;
+  private List<JsonNode> arguments;
 
-  public ExecutionRequest(String lambdaName, List<Json> arguments) {
+  public ExecutionRequest(String lambdaName, List<JsonNode> arguments) {
     this.lambdaName = lambdaName;
     this.arguments = arguments;
   }
@@ -25,11 +25,11 @@ public class ExecutionRequest {
     this.lambdaName = lambdaName;
   }
 
-  public void setArguments(List<Json> arguments) {
+  public void setArguments(List<JsonNode> arguments) {
     this.arguments = arguments;
   }
 
-  public List<Json> getArguments() {
+  public List<JsonNode> getArguments() {
     return this.arguments;
   }
 

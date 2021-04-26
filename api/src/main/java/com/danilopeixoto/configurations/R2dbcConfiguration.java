@@ -1,7 +1,9 @@
 package com.danilopeixoto.configurations;
 
-import com.danilopeixoto.converters.RuntimeTypeConverter;
-import com.danilopeixoto.converters.StatusTypeConverter;
+import com.danilopeixoto.converters.JsonNodeReadingConverter;
+import com.danilopeixoto.converters.JsonNodeWritingConverter;
+import com.danilopeixoto.converters.RuntimeTypeWritingConverter;
+import com.danilopeixoto.converters.StatusTypeWritingConverter;
 import com.danilopeixoto.models.RuntimeType;
 import com.danilopeixoto.models.StatusType;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
@@ -46,8 +48,10 @@ public class R2dbcConfiguration extends AbstractR2dbcConfiguration {
   public R2dbcCustomConversions r2dbcCustomConversions() {
     return R2dbcCustomConversions.of(
       PostgresDialect.INSTANCE,
-      new RuntimeTypeConverter(),
-      new StatusTypeConverter());
+      new RuntimeTypeWritingConverter(),
+      new StatusTypeWritingConverter(),
+      new JsonNodeWritingConverter(),
+      new JsonNodeReadingConverter());
   }
 
   @Bean

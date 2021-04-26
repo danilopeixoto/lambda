@@ -23,12 +23,12 @@ public class LambdaController {
   private LambdaService service;
 
   @Autowired
-  private ModelMapper mapper;
+  private ModelMapper modelMapper;
 
   @PostMapping
   public Mono<LambdaModel> create(@Valid @RequestBody Mono<LambdaRequest> lambdaRequest) {
     return lambdaRequest
-      .map(request -> this.mapper.map(request, LambdaModel.class))
+      .map(request -> this.modelMapper.map(request, LambdaModel.class))
       .flatMap(this.service::create);
   }
 
@@ -54,7 +54,7 @@ public class LambdaController {
     @PathVariable UUID id,
     @Valid @RequestBody Mono<LambdaRequest> lambdaUpdateRequest) {
     return lambdaUpdateRequest
-      .map(request -> this.mapper.map(request, LambdaModel.class))
+      .map(request -> this.modelMapper.map(request, LambdaModel.class))
       .flatMap(lambda -> this.service.update(id, lambda))
       .map(ResponseEntity::ok)
       .defaultIfEmpty(ResponseEntity.notFound().build());

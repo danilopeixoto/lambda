@@ -1,7 +1,7 @@
 package com.danilopeixoto.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.r2dbc.postgresql.codec.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -25,11 +25,11 @@ public class ExecutionModel {
 
   @Column("arguments")
   @JsonProperty("arguments")
-  private List<Json> arguments;
+  private List<JsonNode> arguments;
 
   @Column("result")
   @JsonProperty("result")
-  private Json result;
+  private JsonNode result;
 
   @Column("log")
   @JsonProperty("log")
@@ -51,8 +51,8 @@ public class ExecutionModel {
 
   public ExecutionModel(
     UUID lambdaID,
-    List<Json> arguments,
-    Json result,
+    List<JsonNode> arguments,
+    JsonNode result,
     String log,
     StatusType status) {
     this.lambdaID = lambdaID;
@@ -66,11 +66,11 @@ public class ExecutionModel {
     this.lambdaID = lambdaID;
   }
 
-  public void setArguments(List<Json> arguments) {
+  public void setArguments(List<JsonNode> arguments) {
     this.arguments = arguments;
   }
 
-  public void setResult(Json result) {
+  public void setResult(JsonNode result) {
     this.result = result;
   }
 
@@ -90,11 +90,11 @@ public class ExecutionModel {
     return this.lambdaID;
   }
 
-  public List<Json> getArguments() {
+  public List<JsonNode> getArguments() {
     return this.arguments;
   }
 
-  public Json getResult() {
+  public JsonNode getResult() {
     return this.result;
   }
 

@@ -41,6 +41,8 @@ import java.util.List;
 
 public class AddLambda {
   public static Number compute(List<Number> numbers) {
+    System.out.println("Running add lambda...");
+
     return numbers
       .stream()
       .reduce(0, (a, b) -> a.doubleValue() + b.doubleValue());

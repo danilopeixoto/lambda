@@ -17,7 +17,7 @@ public class ExecutionService {
   private ExecutionRepository repository;
 
   @Autowired
-  private ModelMapper mapper;
+  private ModelMapper modelMapper;
 
   public Mono<ExecutionModel> create(final ExecutionModel execution) {
     return this.repository.save(execution);
@@ -40,7 +40,7 @@ public class ExecutionService {
     return this.repository
       .findById(id)
       .flatMap(newExecution -> {
-        this.mapper.map(execution, newExecution);
+        this.modelMapper.map(execution, newExecution);
         return this.repository.save(newExecution);
       });
   }

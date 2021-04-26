@@ -1,7 +1,7 @@
 package com.danilopeixoto.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.r2dbc.postgresql.codec.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 public class ExecutionUpdateRequest {
   @NotNull
   @JsonProperty("result")
-  private Json result;
+  private JsonNode result;
 
   @NotNull
   @JsonProperty("log")
@@ -20,7 +20,7 @@ public class ExecutionUpdateRequest {
   private StatusType status;
 
   public ExecutionUpdateRequest(
-    Json result,
+    JsonNode result,
     String log,
     StatusType status) {
     this.result = result;
@@ -28,7 +28,7 @@ public class ExecutionUpdateRequest {
     this.status = status;
   }
 
-  public void setResult(Json result) {
+  public void setResult(JsonNode result) {
     this.result = result;
   }
 
@@ -40,7 +40,7 @@ public class ExecutionUpdateRequest {
     this.status = status;
   }
 
-  public Json getResult() {
+  public JsonNode getResult() {
     return this.result;
   }
 

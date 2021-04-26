@@ -4,7 +4,7 @@ import com.danilopeixoto.models.ExecutionModel;
 import com.danilopeixoto.models.ExecutionUpdateRequest;
 import com.danilopeixoto.models.LambdaModel;
 import com.danilopeixoto.models.StatusType;
-import io.r2dbc.postgresql.codec.Json;
+import com.danilopeixoto.services.runtimes.LambdaRuntimeProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,6 +18,9 @@ public class LambdaService {
   @Autowired
   private WebClient client;
 
+  @Autowired
+  private LambdaRuntimeProvider lambdaRuntimeProvider;
+
   public Mono<LambdaModel> get(final UUID id) {
     return this.client
       .get()
@@ -26,15 +29,17 @@ public class LambdaService {
       .bodyToMono(LambdaModel.class);
   }
 
-  public Mono<Tuple2<UUID, ExecutionUpdateRequest>> execute(
+  public Mono<? extends Tuple2<UUID, ExecutionUpdateRequest>> execute(
     final ExecutionModel execution,
     final LambdaModel lambda) {
     return Mono
-      .just(execution.getID())
-      .zipWith(Mono.just(new ExecutionUpdateRequest(
-        Json.of(""),
-        "",
-        StatusType.Done)));
+      .just(lambdaRuntimeProvider.get(lambda.getRuntime()))
+      .map(runtime -> runtime.execute(lambda.getSource(), execution.getArguments()))
+      .flatMap(result -> Mono
+        .just(execution.getID())
+        .zipWith(Mono.just(new ExecutionUpdateRequest(
+          result.getT1(),
+          result.getT2(),
+          result.getT3() == 0 ? StatusType.Done : StatusType.Error))));
   }
-
 }

@@ -5,7 +5,7 @@ import com.danilopeixoto.models.ExecutionRequest;
 import com.danilopeixoto.models.LambdaModel;
 import com.danilopeixoto.models.StatusType;
 import com.danilopeixoto.repositories.LambdaRepository;
-import io.r2dbc.postgresql.codec.Json;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,10 @@ public class LambdaService {
   private LambdaRepository repository;
 
   @Autowired
-  private ModelMapper mapper;
+  private ObjectMapper objectMapper;
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   public Mono<LambdaModel> create(final LambdaModel lambda) {
     return this.repository.save(lambda);
@@ -44,7 +47,7 @@ public class LambdaService {
     return this.repository
       .findById(id)
       .flatMap(newLambda -> {
-        this.mapper.map(lambda, newLambda);
+        this.modelMapper.map(lambda, newLambda);
         return this.repository.save(newLambda);
       });
   }
@@ -66,7 +69,7 @@ public class LambdaService {
       .map(result -> new ExecutionModel(
         result.getT1().getID(),
         result.getT2().getArguments(),
-        Json.of(""),
+        this.objectMapper.missingNode(),
         "",
         StatusType.Ready
       ));
