@@ -6,7 +6,7 @@ import reactor.util.function.Tuple3;
 import java.util.List;
 
 public interface LambdaRuntime {
-  static String EntrypointMethodName = "compute";
+  static String Entrypoint = "compute";
 
   Tuple3<JsonNode, String, Integer> execute(final String source, final List<JsonNode> arguments);
 }

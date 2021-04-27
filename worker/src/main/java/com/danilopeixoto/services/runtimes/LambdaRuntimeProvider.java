@@ -11,11 +11,11 @@ public class LambdaRuntimeProvider {
     this.runtimes = new HashMap<>();
   }
 
-  public void registerRuntime(RuntimeType type, LambdaRuntime builder) {
+  public void registerRuntime(final RuntimeType type, final LambdaRuntime builder) {
     this.runtimes.put(type, builder);
   }
 
-  public void deregisterRuntime(RuntimeType type) {
+  public void deregisterRuntime(final RuntimeType type) {
     this.runtimes.remove(type);
   }
 
@@ -23,7 +23,7 @@ public class LambdaRuntimeProvider {
     return this.runtimes;
   }
 
-  public LambdaRuntime get(RuntimeType type) {
+  public LambdaRuntime get(final RuntimeType type) {
     return this.runtimes.get(type);
   }
 }

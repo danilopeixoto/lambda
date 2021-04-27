@@ -49,8 +49,8 @@ public class JavaLambdaRuntime implements LambdaRuntime {
   }
 
   private String getMainClassName(final String source) {
-    String className = Strings.EMPTY;
     CompilationUnit compilationUnit = StaticJavaParser.parse(source);
+    String className = Strings.EMPTY;
 
     this.mainClassNameCollector.visit(compilationUnit, className);
 
@@ -80,14 +80,13 @@ public class JavaLambdaRuntime implements LambdaRuntime {
   private Method getEntrypointMethod(
     final ClassLoader classLoader,
     final String className,
-    final List<Class<?>> methodSignature,
-    final List<Object> inputs) throws ClassNotFoundException, NoSuchMethodException {
+    final List<Class<?>> methodSignature) throws ClassNotFoundException, NoSuchMethodException {
     return Arrays
       .stream(Class
         .forName(className, true, classLoader)
         .getDeclaredMethods())
-      .filter(method -> method.getName().equals(LambdaRuntime.EntrypointMethodName))
-      .filter(method -> method.getParameterCount() == inputs.size())
+      .filter(method -> method.getName().equals(LambdaRuntime.Entrypoint))
+      .filter(method -> method.getParameterCount() == methodSignature.size())
       .filter(method -> IntStream
         .range(0, method.getParameterCount())
         .allMatch(i -> method
@@ -98,7 +97,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
         String.format(
           "%s.%s(%s)",
           className,
-          LambdaRuntime.EntrypointMethodName,
+          LambdaRuntime.Entrypoint,
           methodSignature
             .stream()
             .map(Class::getName)
@@ -138,7 +137,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
       if (task.call()) {
         List<Object> inputs = this.argumentToInputs(arguments);
         List<Class<?>> methodSignature = this.getMethodSignature(inputs);
-        Method method = this.getEntrypointMethod(classLoader, className, methodSignature, inputs);
+        Method method = this.getEntrypointMethod(classLoader, className, methodSignature);
 
         ByteArrayOutputStream logStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(logStream));
@@ -161,7 +160,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
             .append(diagnostic.toString())
             .append('\n'));
 
-        throw new RuntimeException(logBuilder.toString());
+        throw new IllegalArgumentException(logBuilder.toString());
       }
     } catch (Exception exception) {
       StringWriter logWriter = new StringWriter();
