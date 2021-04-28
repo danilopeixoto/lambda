@@ -1,10 +1,13 @@
-create extension if not exists 'uuid-ossp';
+create extension if not exists "uuid-ossp";;
 
-create type if not exists runtime_type as enum('Java');
-create type if not exists status_type as enum('Ready', 'Done', 'Error');
-
-create index if not exists lambda_name_index on lambda (name);
-create index if not exists execution_lambda_id_index on execution (lambda_id);
+do $$
+begin
+  create type runtime_type as enum('Java');
+  create type status_type as enum('Ready', 'Done', 'Error');
+exception
+  when duplicate_object then
+    raise notice 'types "runtime_type" and "status_type" already exist, skipping';
+end $$;;
 
 create table if not exists lambda (
   id uuid default uuid_generate_v4(),
@@ -15,7 +18,7 @@ create table if not exists lambda (
   created_at timestamp not null,
   updated_at timestamp not null,
   constraint lambda_pk_constraint primary key (id)
-);
+);;
 
 create table if not exists execution (
   id uuid default uuid_generate_v4(),
@@ -31,4 +34,7 @@ create table if not exists execution (
     foreign key (lambda_id)
     references lambda (id)
     on delete cascade
-);
+);;
+
+create index if not exists lambda_name_index on lambda (name);;
+create index if not exists execution_lambda_id_index on execution (lambda_id);;

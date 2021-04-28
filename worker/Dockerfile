@@ -6,6 +6,8 @@ LABEL maintainer "Danilo Peixoto"
 
 WORKDIR /usr/bin/worker/
 
-COPY build/worker.jar .
+COPY . .
 
-CMD ["java", "-jar", "-Dspring.profiles.active=production", "worker.jar"]
+RUN ./gradlew build
+
+CMD ["java", "-jar", "-Dspring.profiles.active=production", "build/libs/worker-1.0.0.jar"]

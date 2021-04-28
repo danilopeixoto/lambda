@@ -6,8 +6,10 @@ LABEL maintainer "Danilo Peixoto"
 
 WORKDIR /usr/bin/api/
 
-COPY build/api.jar .
+COPY . .
+
+RUN ./gradlew build
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "-Dspring.profiles.active=production", "api.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=production", "build/libs/api-1.0.0.jar"]
