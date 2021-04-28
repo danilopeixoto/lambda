@@ -27,8 +27,8 @@ Request body:
 
 ```json
 {
-  "name": "add",
-  "description": "Add numbers.",
+  "name": "sum",
+  "description": "Sum numbers.",
   "runtime": "java",
   "source": "<sample>"
 }
@@ -39,9 +39,9 @@ Source code sample:
 ```java
 import java.util.List;
 
-public class AddLambda {
+public class SumLambda {
   public static Number compute(List<Number> numbers) {
-    System.out.println("Running add lambda...");
+    System.out.println("Running sum lambda...");
 
     return numbers
       .stream()
@@ -60,7 +60,7 @@ Request body:
 
 ```json
 {
-  "lambda_name": "add",
+  "lambda_name": "sum",
   "arguments": "[[0, 1, 2, 3, 4, 5]]"
 }
 ```
@@ -68,7 +68,7 @@ Request body:
 Query executions:
 
 ```
-GET http://localhost:8000/api/v1/execution?lambdaID=<id>
+GET http://localhost:8000/api/v1/execution?lambdaName=sum
 ```
 
 ## Documentation

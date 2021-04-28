@@ -15,7 +15,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.Objects;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validated
@@ -36,7 +37,7 @@ public class ExecutionController {
 
   @PostMapping
   public Mono<ResponseEntity<ExecutionModel>> create(
-    @Valid @RequestBody Mono<ExecutionRequest> executionRequest) {
+    @Valid @RequestBody final Mono<ExecutionRequest> executionRequest) {
     return executionRequest
       .flatMap(this.lambdaService::execute)
       .flatMap(this.executionService::create)
@@ -46,7 +47,7 @@ public class ExecutionController {
   }
 
   @GetMapping("/{id}")
-  public Mono<ResponseEntity<ExecutionModel>> get(@PathVariable UUID id) {
+  public Mono<ResponseEntity<ExecutionModel>> get(@PathVariable final UUID id) {
     return this.executionService
       .get(id)
       .map(ResponseEntity::ok)
@@ -55,18 +56,27 @@ public class ExecutionController {
 
   @GetMapping
   public Flux<ExecutionModel> find(
-    @RequestParam(value = "lambdaID", required = false) UUID lambdaID) {
+    @RequestParam(value = "lambdaID", required = false) final UUID lambdaID,
+    @RequestParam(value = "lambdaName", required = false) final String lambdaName) {
     return Flux
-      .just(lambdaID)
-      .filter(Objects::nonNull)
+      .just(Optional.ofNullable(lambdaID))
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .switchIfEmpty(Flux
+        .just(Optional.ofNullable(lambdaName))
+        .flatMap(name -> Mono.fromCallable(name::orElseThrow))
+        .flatMap(this.lambdaService::find)
+        .flatMap(lambda -> Mono.just(lambda.getID())))
       .flatMap(this.executionService::find)
-      .switchIfEmpty(this.executionService.list());
+      .onErrorResume(
+        NoSuchElementException.class,
+        exception -> this.executionService.list());
   }
 
   @PutMapping("/{id}")
   public Mono<ResponseEntity<ExecutionModel>> update(
-    @PathVariable UUID id,
-    @Valid @RequestBody Mono<ExecutionUpdateRequest> executionUpdateRequest) {
+    @PathVariable final UUID id,
+    @Valid @RequestBody final Mono<ExecutionUpdateRequest> executionUpdateRequest) {
     return executionUpdateRequest
       .map(request -> this.modelMapper.map(request, ExecutionModel.class))
       .flatMap(execution -> this.executionService.update(id, execution))
@@ -75,7 +85,7 @@ public class ExecutionController {
   }
 
   @DeleteMapping("/{id}")
-  public Mono<ResponseEntity<ExecutionModel>> delete(@PathVariable UUID id) {
+  public Mono<ResponseEntity<ExecutionModel>> delete(@PathVariable final UUID id) {
     return this.executionService
       .delete(id)
       .map(ResponseEntity::ok)

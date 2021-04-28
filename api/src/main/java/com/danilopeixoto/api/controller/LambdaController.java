@@ -12,7 +12,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.Objects;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validated
@@ -26,14 +27,14 @@ public class LambdaController {
   private ModelMapper modelMapper;
 
   @PostMapping
-  public Mono<LambdaModel> create(@Valid @RequestBody Mono<LambdaRequest> lambdaRequest) {
+  public Mono<LambdaModel> create(@Valid @RequestBody final Mono<LambdaRequest> lambdaRequest) {
     return lambdaRequest
       .map(request -> this.modelMapper.map(request, LambdaModel.class))
       .flatMap(this.service::create);
   }
 
   @GetMapping("/{id}")
-  public Mono<ResponseEntity<LambdaModel>> get(@PathVariable UUID id) {
+  public Mono<ResponseEntity<LambdaModel>> get(@PathVariable final UUID id) {
     return this.service
       .get(id)
       .map(ResponseEntity::ok)
@@ -41,18 +42,20 @@ public class LambdaController {
   }
 
   @GetMapping
-  public Flux<LambdaModel> find(@RequestParam(value = "name", required = false) String name) {
+  public Flux<LambdaModel> find(@RequestParam(value = "name", required = false) final String name) {
     return Flux
-      .just(name)
-      .filter(Objects::nonNull)
+      .just(Optional.ofNullable(name))
+      .flatMap(lambdaName -> Mono.fromCallable(lambdaName::orElseThrow))
       .flatMap(this.service::find)
-      .switchIfEmpty(this.service.list());
+      .onErrorResume(
+        NoSuchElementException.class,
+        exception -> this.service.list());
   }
 
   @PutMapping("/{id}")
   public Mono<ResponseEntity<LambdaModel>> update(
-    @PathVariable UUID id,
-    @Valid @RequestBody Mono<LambdaRequest> lambdaUpdateRequest) {
+    @PathVariable final UUID id,
+    @Valid @RequestBody final Mono<LambdaRequest> lambdaUpdateRequest) {
     return lambdaUpdateRequest
       .map(request -> this.modelMapper.map(request, LambdaModel.class))
       .flatMap(lambda -> this.service.update(id, lambda))
@@ -61,7 +64,7 @@ public class LambdaController {
   }
 
   @DeleteMapping("/{id}")
-  public Mono<ResponseEntity<LambdaModel>> delete(@PathVariable UUID id) {
+  public Mono<ResponseEntity<LambdaModel>> delete(@PathVariable final UUID id) {
     return this.service
       .delete(id)
       .map(ResponseEntity::ok)

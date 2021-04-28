@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -62,9 +64,19 @@ public class LambdaService {
   }
 
   public Mono<ExecutionModel> execute(final ExecutionRequest executionRequest) {
-    return this.repository
-      .findByName(executionRequest.getLambdaName())
-      .singleOrEmpty()
+    return Mono
+      .just(Optional.ofNullable(executionRequest.getLambdaID()))
+      .flatMap(id -> Mono.fromCallable(id::orElseThrow))
+      .flatMap(this.repository::findById)
+      .onErrorResume(
+        NoSuchElementException.class,
+        exception -> Mono
+          .just(Optional.ofNullable(executionRequest.getLambdaName()))
+          .filter(Optional::isPresent)
+          .map(Optional::get)
+          .flatMap(name -> this.repository
+            .findByName(name)
+            .singleOrEmpty()))
       .zipWith(Mono.just(executionRequest))
       .map(result -> new ExecutionModel(
         result.getT1().getID(),
