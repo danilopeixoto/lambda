@@ -8,6 +8,6 @@ WORKDIR /usr/bin/worker/
 
 COPY . .
 
-RUN ./gradlew build
+RUN chmod +x gradlew && ./gradlew build
 
 CMD ["java", "-jar", "-Dspring.profiles.active=production", "build/libs/worker-1.0.0.jar"]

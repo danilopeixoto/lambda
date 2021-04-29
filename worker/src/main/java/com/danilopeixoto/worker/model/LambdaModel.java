@@ -27,6 +27,9 @@ public class LambdaModel {
   @JsonProperty("updated_at")
   private Instant updatedAt;
 
+  public LambdaModel() {
+  }
+
   public LambdaModel(
     String name,
     String description,

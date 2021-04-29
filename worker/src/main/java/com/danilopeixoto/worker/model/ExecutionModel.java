@@ -2,9 +2,9 @@ package com.danilopeixoto.worker.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 public class ExecutionModel {
@@ -15,7 +15,7 @@ public class ExecutionModel {
   private UUID lambdaID;
 
   @JsonProperty("arguments")
-  private List<JsonNode> arguments;
+  private ArrayNode arguments;
 
   @JsonProperty("result")
   private JsonNode result;
@@ -32,9 +32,12 @@ public class ExecutionModel {
   @JsonProperty("updated_at")
   private Instant updatedAt;
 
+  public ExecutionModel() {
+  }
+
   public ExecutionModel(
     UUID lambdaID,
-    List<JsonNode> arguments,
+    ArrayNode arguments,
     JsonNode result,
     String log,
     StatusType status) {
@@ -49,7 +52,7 @@ public class ExecutionModel {
     this.lambdaID = lambdaID;
   }
 
-  public void setArguments(List<JsonNode> arguments) {
+  public void setArguments(ArrayNode arguments) {
     this.arguments = arguments;
   }
 
@@ -73,7 +76,7 @@ public class ExecutionModel {
     return this.lambdaID;
   }
 
-  public List<JsonNode> getArguments() {
+  public ArrayNode getArguments() {
     return this.arguments;
   }
 

@@ -4,11 +4,9 @@ import com.danilopeixoto.worker.runtime.LambdaRuntime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
@@ -19,21 +17,21 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class JavaLambdaRuntime implements LambdaRuntime {
-  @Autowired
-  private ObjectMapper jsonMapper;
-
+  private final ObjectMapper jsonMapper;
   private final PrintStream standardOutput;
-  private final VoidVisitor<String> mainClassNameCollector;
+  private final MainClassNameCollector mainClassNameCollector;
   private final JavaCompiler compiler;
   private final DiagnosticCollector<JavaFileObject> diagnostics;
 
   public JavaLambdaRuntime() {
+    this.jsonMapper = new ObjectMapper();
     this.standardOutput = System.out;
     this.mainClassNameCollector = new MainClassNameCollector();
     this.compiler = ToolProvider.getSystemJavaCompiler();
@@ -50,24 +48,18 @@ public class JavaLambdaRuntime implements LambdaRuntime {
 
   private String getMainClassName(final String source) {
     CompilationUnit compilationUnit = StaticJavaParser.parse(source);
-    String className = Strings.EMPTY;
+    List<String> classNames = new ArrayList<>();
 
-    this.mainClassNameCollector.visit(compilationUnit, className);
+    this.mainClassNameCollector.visit(compilationUnit, classNames);
 
-    return className;
+    return classNames
+      .stream()
+      .findFirst()
+      .orElse("");
   }
 
-  private List<Object> argumentToInputs(final List<JsonNode> arguments) {
-    return arguments
-      .stream()
-      .map(argument -> {
-        try {
-          return this.jsonMapper.treeToValue(argument, Object.class);
-        } catch (JsonProcessingException exception) {
-          throw new IllegalArgumentException(exception.getMessage());
-        }
-      })
-      .collect(Collectors.toList());
+  private List<Object> argumentToInputs(final ArrayNode arguments) throws JsonProcessingException {
+    return List.of(this.jsonMapper.treeToValue(arguments, Object[].class));
   }
 
   private List<Class<?>> getMethodSignature(final List<Object> inputs) {
@@ -127,7 +119,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
   }
 
   @Override
-  public Tuple3<JsonNode, String, Integer> execute(final String source, final List<JsonNode> arguments) {
+  public Tuple3<JsonNode, String, Integer> execute(final String source, final ArrayNode arguments) {
     try {
       ClassLoader classLoader = this.getClassLoader();
       String className = this.getMainClassName(source);
@@ -166,7 +158,7 @@ public class JavaLambdaRuntime implements LambdaRuntime {
       StringWriter logWriter = new StringWriter();
       exception.printStackTrace(new PrintWriter(logWriter));
 
-      return Tuples.of(this.jsonMapper.missingNode(), logWriter.toString(), 1);
+      return Tuples.of(this.jsonMapper.nullNode(), logWriter.toString(), 1);
     }
   }
 }

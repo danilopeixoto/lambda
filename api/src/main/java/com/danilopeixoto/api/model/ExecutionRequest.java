@@ -1,10 +1,11 @@
 package com.danilopeixoto.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ExecutionRequest {
@@ -16,9 +17,12 @@ public class ExecutionRequest {
 
   @NotNull
   @JsonProperty("arguments")
-  private List<JsonNode> arguments;
+  private ArrayNode arguments;
 
-  public ExecutionRequest(UUID lambdaID, String lambdaName, List<JsonNode> arguments) {
+  public ExecutionRequest() {
+  }
+
+  public ExecutionRequest(UUID lambdaID, String lambdaName, ArrayNode arguments) {
     this.lambdaID = lambdaID;
     this.lambdaName = lambdaName;
     this.arguments = arguments;
@@ -32,19 +36,21 @@ public class ExecutionRequest {
     this.lambdaName = lambdaName;
   }
 
-  public void setArguments(List<JsonNode> arguments) {
+  public void setArguments(ArrayNode arguments) {
     this.arguments = arguments;
   }
 
-  public UUID getLambdaID() {
-    return this.lambdaID;
+  @JsonIgnore
+  public Optional<UUID> getLambdaID() {
+    return Optional.ofNullable(this.lambdaID);
   }
 
-  public List<JsonNode> getArguments() {
+  @JsonIgnore
+  public Optional<String> getLambdaName() {
+    return Optional.ofNullable(this.lambdaName);
+  }
+
+  public ArrayNode getArguments() {
     return this.arguments;
-  }
-
-  public String getLambdaName() {
-    return this.lambdaName;
   }
 }

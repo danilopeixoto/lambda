@@ -5,11 +5,16 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.UUID;
 
+@Table("lambda")
 public class LambdaModel {
+  @NotNull
   @Id
   @Column("id")
   @JsonProperty("id")
@@ -19,27 +24,35 @@ public class LambdaModel {
   @JsonProperty("name")
   private String name;
 
+  @NotEmpty
   @Column("description")
   @JsonProperty("description")
   private String description;
 
+  @NotNull
   @Column("runtime")
   @JsonProperty("runtime")
   private RuntimeType runtime;
 
+  @NotEmpty
   @Column("source")
   @JsonProperty("source")
   private String source;
 
+  @NotNull
   @CreatedDate
   @Column("created_at")
   @JsonProperty("created_at")
   private Instant createdAt;
 
+  @NotNull
   @LastModifiedDate
   @Column("updated_at")
   @JsonProperty("updated_at")
   private Instant updatedAt;
+
+  public LambdaModel() {
+  }
 
   public LambdaModel(
     String name,

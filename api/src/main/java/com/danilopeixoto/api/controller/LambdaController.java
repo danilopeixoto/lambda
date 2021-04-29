@@ -45,7 +45,7 @@ public class LambdaController {
   public Flux<LambdaModel> find(@RequestParam(value = "name", required = false) final String name) {
     return Flux
       .just(Optional.ofNullable(name))
-      .flatMap(lambdaName -> Mono.fromCallable(lambdaName::orElseThrow))
+      .flatMap(lambdaName -> Mono.fromCallable(lambdaName::get))
       .flatMap(this.service::find)
       .onErrorResume(
         NoSuchElementException.class,

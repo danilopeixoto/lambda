@@ -1,6 +1,7 @@
 package com.danilopeixoto.worker.service;
 
 import com.danilopeixoto.worker.model.ExecutionModel;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,6 @@ public class ExecutionConsumer {
   public Flux<ExecutionModel> dequeue() {
     return this.template
       .receive()
-      .map(result -> result.value());
+      .map(ConsumerRecord::value);
   }
 }

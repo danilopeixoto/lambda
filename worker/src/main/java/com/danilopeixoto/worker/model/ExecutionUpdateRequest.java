@@ -13,6 +13,9 @@ public class ExecutionUpdateRequest {
   @JsonProperty("status")
   private StatusType status;
 
+  public ExecutionUpdateRequest() {
+  }
+
   public ExecutionUpdateRequest(
     JsonNode result,
     String log,

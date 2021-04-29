@@ -23,8 +23,8 @@ create table if not exists lambda (
 create table if not exists execution (
   id uuid default uuid_generate_v4(),
   lambda_id uuid not null,
-  arguments jsonb[] not null,
-  result jsonb not null,
+  arguments json not null,
+  result json not null,
   log text not null,
   status status_type not null,
   created_at timestamp not null,

@@ -63,15 +63,16 @@ public class LambdaService {
         .then(Mono.just(lambda)));
   }
 
+  @Transactional
   public Mono<ExecutionModel> execute(final ExecutionRequest executionRequest) {
     return Mono
-      .just(Optional.ofNullable(executionRequest.getLambdaID()))
-      .flatMap(id -> Mono.fromCallable(id::orElseThrow))
+      .just(executionRequest.getLambdaID())
+      .flatMap(id -> Mono.fromCallable(id::get))
       .flatMap(this.repository::findById)
       .onErrorResume(
         NoSuchElementException.class,
         exception -> Mono
-          .just(Optional.ofNullable(executionRequest.getLambdaName()))
+          .just(executionRequest.getLambdaName())
           .filter(Optional::isPresent)
           .map(Optional::get)
           .flatMap(name -> this.repository
@@ -81,7 +82,7 @@ public class LambdaService {
       .map(result -> new ExecutionModel(
         result.getT1().getID(),
         result.getT2().getArguments(),
-        this.objectMapper.missingNode(),
+        this.objectMapper.nullNode(),
         "",
         StatusType.Ready
       ));

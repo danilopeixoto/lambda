@@ -1,9 +1,13 @@
 spring:
+  webflux:
+    base-path: /api/${API_VERSION}
   kafka:
     producer:
       bootstrap-servers: ${BROKER_HOSTNAME}:${BROKER_PORT}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: execution:com.danilopeixoto.api.model.ExecutionModel
   r2dbc:
     driver-class-name: org.postgresql.Driver
     url: r2dbc:postgresql://${DATABASE_HOSTNAME}:${DATABASE_PORT}/${DATABASE_NAME}
@@ -12,8 +16,6 @@ spring:
 
 server:
   port: ${API_PORT}
-  servlet:
-    context-path: /api/${API_VERSION}
 
 api:
   version: ${API_VERSION}
@@ -22,6 +24,6 @@ api:
 
 springdoc:
   api-docs:
-    path: /docs
+    path: /openapi
   swagger-ui:
-    path: /docs/index.html
+    path: /docs

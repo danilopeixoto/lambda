@@ -3,6 +3,7 @@ package com.danilopeixoto.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class LambdaRequest {
   @NotEmpty
@@ -13,13 +14,16 @@ public class LambdaRequest {
   @JsonProperty("description")
   private String description;
 
-  @NotEmpty
+  @NotNull
   @JsonProperty("runtime")
   private RuntimeType runtime;
 
   @NotEmpty
   @JsonProperty("source")
   private String source;
+
+  public LambdaRequest() {
+  }
 
   public LambdaRequest(
     String name,

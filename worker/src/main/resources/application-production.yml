@@ -1,10 +1,14 @@
 spring:
+  main:
+    web-application-type: none
   kafka:
     consumer:
       bootstrap-servers: ${BROKER_HOSTNAME}:${BROKER_PORT}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       group-id: main
+      properties:
+        spring.json.type.mapping: execution:com.danilopeixoto.worker.model.ExecutionModel
 
 api:
   hostname: ${API_HOSTNAME}

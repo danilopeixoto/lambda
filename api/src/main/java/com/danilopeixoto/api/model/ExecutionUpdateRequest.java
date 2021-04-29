@@ -3,7 +3,6 @@ package com.danilopeixoto.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ExecutionUpdateRequest {
@@ -15,9 +14,12 @@ public class ExecutionUpdateRequest {
   @JsonProperty("log")
   private String log;
 
-  @NotEmpty
+  @NotNull
   @JsonProperty("status")
   private StatusType status;
+
+  public ExecutionUpdateRequest() {
+  }
 
   public ExecutionUpdateRequest(
     JsonNode result,

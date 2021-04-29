@@ -2,56 +2,68 @@ package com.danilopeixoto.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
-@Table("Execution")
+@Table("execution")
 public class ExecutionModel {
+  @NotNull
   @Id
   @Column("id")
   @JsonProperty("id")
   private UUID id;
 
+  @NotNull
   @Column("lambda_id")
   @JsonProperty("lambda_id")
   private UUID lambdaID;
 
+  @NotNull
   @Column("arguments")
   @JsonProperty("arguments")
-  private List<JsonNode> arguments;
+  private ArrayNode arguments;
 
+  @NotNull
   @Column("result")
   @JsonProperty("result")
   private JsonNode result;
 
+  @NotNull
   @Column("log")
   @JsonProperty("log")
   private String log;
 
+  @NotNull
   @Column("status")
   @JsonProperty("status")
   private StatusType status;
 
+  @NotNull
   @CreatedDate
   @Column("created_at")
   @JsonProperty("created_at")
   private Instant createdAt;
 
+  @NotNull
   @LastModifiedDate
   @Column("updated_at")
   @JsonProperty("updated_at")
   private Instant updatedAt;
 
+  public ExecutionModel() {
+  }
+
   public ExecutionModel(
     UUID lambdaID,
-    List<JsonNode> arguments,
+    ArrayNode arguments,
     JsonNode result,
     String log,
     StatusType status) {
@@ -66,7 +78,7 @@ public class ExecutionModel {
     this.lambdaID = lambdaID;
   }
 
-  public void setArguments(List<JsonNode> arguments) {
+  public void setArguments(ArrayNode arguments) {
     this.arguments = arguments;
   }
 
@@ -90,7 +102,7 @@ public class ExecutionModel {
     return this.lambdaID;
   }
 
-  public List<JsonNode> getArguments() {
+  public ArrayNode getArguments() {
     return this.arguments;
   }
 

@@ -64,7 +64,7 @@ public class ExecutionController {
       .map(Optional::get)
       .switchIfEmpty(Flux
         .just(Optional.ofNullable(lambdaName))
-        .flatMap(name -> Mono.fromCallable(name::orElseThrow))
+        .flatMap(name -> Mono.fromCallable(name::get))
         .flatMap(this.lambdaService::find)
         .flatMap(lambda -> Mono.just(lambda.getID())))
       .flatMap(this.executionService::find)

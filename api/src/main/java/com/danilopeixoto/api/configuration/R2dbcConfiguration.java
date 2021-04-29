@@ -1,9 +1,6 @@
 package com.danilopeixoto.api.configuration;
 
-import com.danilopeixoto.api.converter.JsonNodeReadingConverter;
-import com.danilopeixoto.api.converter.JsonNodeWritingConverter;
-import com.danilopeixoto.api.converter.RuntimeTypeWritingConverter;
-import com.danilopeixoto.api.converter.StatusTypeWritingConverter;
+import com.danilopeixoto.api.converter.*;
 import com.danilopeixoto.api.model.RuntimeType;
 import com.danilopeixoto.api.model.StatusType;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
@@ -61,7 +58,8 @@ public class R2dbcConfiguration extends AbstractR2dbcConfiguration {
       new RuntimeTypeWritingConverter(),
       new StatusTypeWritingConverter(),
       new JsonNodeWritingConverter(),
-      new JsonNodeReadingConverter());
+      new JsonNodeReadingConverter(),
+      new ArrayNodeReadingConverter());
   }
 
   @Bean

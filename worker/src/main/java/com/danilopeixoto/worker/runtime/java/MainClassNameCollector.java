@@ -2,15 +2,16 @@ package com.danilopeixoto.worker.runtime.java;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import org.apache.logging.log4j.util.Strings;
 
-public class MainClassNameCollector extends VoidVisitorAdapter<String> {
+import java.util.List;
+
+public class MainClassNameCollector extends VoidVisitorAdapter<List<String>> {
   @Override
-  public void visit(ClassOrInterfaceDeclaration declaration, String className) {
-    super.visit(declaration, className);
+  public void visit(ClassOrInterfaceDeclaration declaration, List<String> collector) {
+    super.visit(declaration, collector);
 
-    if (className.equals(Strings.EMPTY) && declaration.isPublic()) {
-      className = declaration.getNameAsString();
+    if (declaration.isPublic()) {
+      collector.add(declaration.getNameAsString());
     }
   }
 }

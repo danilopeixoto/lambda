@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Validated
@@ -13,8 +14,8 @@ public class APIConfiguration {
   @NotEmpty
   private String hostname;
 
-  @NotEmpty
-  private String port;
+  @Min(0)
+  private int port;
 
   @NotEmpty
   private String version;
@@ -26,7 +27,7 @@ public class APIConfiguration {
     this.hostname = hostname;
   }
 
-  public void setPort(String port) {
+  public void setPort(int port) {
     this.port = port;
   }
 
@@ -42,7 +43,7 @@ public class APIConfiguration {
     return this.hostname;
   }
 
-  public String getPort() {
+  public int getPort() {
     return this.port;
   }
 
