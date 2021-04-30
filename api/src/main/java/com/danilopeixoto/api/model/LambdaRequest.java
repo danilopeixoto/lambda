@@ -6,19 +6,19 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class LambdaRequest {
-  @NotEmpty
+  @NotEmpty(message = "The name field is required.")
   @JsonProperty("name")
   private String name;
 
-  @NotEmpty
+  @NotEmpty(message = "The description field is required.")
   @JsonProperty("description")
   private String description;
 
-  @NotNull
+  @NotNull(message = "The runtime field is required. Available option is java.")
   @JsonProperty("runtime")
   private RuntimeType runtime;
 
-  @NotEmpty
+  @NotEmpty(message = "The source field is required.")
   @JsonProperty("source")
   private String source;
 

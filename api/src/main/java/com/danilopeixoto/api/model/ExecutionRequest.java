@@ -15,7 +15,7 @@ public class ExecutionRequest {
   @JsonProperty("lambda_name")
   private String lambdaName;
 
-  @NotNull
+  @NotNull(message = "The arguments field is required.")
   @JsonProperty("arguments")
   private ArrayNode arguments;
 

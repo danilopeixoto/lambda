@@ -24,7 +24,7 @@ public class OpenAPIConfiguration {
           .scheme("basic")))
       .info(new Info()
         .title("Lambda API")
-        .description("A distributed Function-as-a-Service (FaaS) platform.")
+        .description("A distributed Function-as-a-Service (FaaS) service.")
         .version(this.configuration.getVersion())
         .contact(new Contact()
           .name("Danilo Peixoto")

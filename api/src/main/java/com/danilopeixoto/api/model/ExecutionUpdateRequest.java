@@ -6,15 +6,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import javax.validation.constraints.NotNull;
 
 public class ExecutionUpdateRequest {
-  @NotNull
+  @NotNull(message = "The result field is required.")
   @JsonProperty("result")
   private JsonNode result;
 
-  @NotNull
+  @NotNull(message = "The log field is required.")
   @JsonProperty("log")
   private String log;
 
-  @NotNull
+  @NotNull(message = "The status field is required. Available options are ready, done and error.")
   @JsonProperty("status")
   private StatusType status;
 

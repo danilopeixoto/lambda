@@ -1,6 +1,6 @@
 # Lambda
 
-A distributed Function-as-a-Service (FaaS) platform.
+A distributed Function-as-a-Service (FaaS) service.
 
 ## Prerequisites
 

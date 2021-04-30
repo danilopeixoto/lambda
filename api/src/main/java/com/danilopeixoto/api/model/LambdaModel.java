@@ -14,38 +14,39 @@ import java.util.UUID;
 
 @Table("lambda")
 public class LambdaModel {
-  @NotNull
+  @NotNull(message = "The ID field is required.")
   @Id
   @Column("id")
   @JsonProperty("id")
   private UUID id;
 
+  @NotEmpty(message = "The name field is required.")
   @Column("name")
   @JsonProperty("name")
   private String name;
 
-  @NotEmpty
+  @NotEmpty(message = "The description field is required.")
   @Column("description")
   @JsonProperty("description")
   private String description;
 
-  @NotNull
+  @NotNull(message = "The runtime field is required. Available option is java.")
   @Column("runtime")
   @JsonProperty("runtime")
   private RuntimeType runtime;
 
-  @NotEmpty
+  @NotEmpty(message = "The source field is required.")
   @Column("source")
   @JsonProperty("source")
   private String source;
 
-  @NotNull
+  @NotNull(message = "The created at field is required.")
   @CreatedDate
   @Column("created_at")
   @JsonProperty("created_at")
   private Instant createdAt;
 
-  @NotNull
+  @NotNull(message = "The updated at field is required.")
   @LastModifiedDate
   @Column("updated_at")
   @JsonProperty("updated_at")

@@ -15,44 +15,44 @@ import java.util.UUID;
 
 @Table("execution")
 public class ExecutionModel {
-  @NotNull
+  @NotNull(message = "The ID field is required.")
   @Id
   @Column("id")
   @JsonProperty("id")
   private UUID id;
 
-  @NotNull
+  @NotNull(message = "The lambda ID is required.")
   @Column("lambda_id")
   @JsonProperty("lambda_id")
   private UUID lambdaID;
 
-  @NotNull
+  @NotNull(message = "The arguments field is required.")
   @Column("arguments")
   @JsonProperty("arguments")
   private ArrayNode arguments;
 
-  @NotNull
+  @NotNull(message = "The result field is required.")
   @Column("result")
   @JsonProperty("result")
   private JsonNode result;
 
-  @NotNull
+  @NotNull(message = "The log field is required.")
   @Column("log")
   @JsonProperty("log")
   private String log;
 
-  @NotNull
+  @NotNull(message = "The status field is required. Available options are ready, done and error.")
   @Column("status")
   @JsonProperty("status")
   private StatusType status;
 
-  @NotNull
+  @NotNull(message = "The created at field is required.")
   @CreatedDate
   @Column("created_at")
   @JsonProperty("created_at")
   private Instant createdAt;
 
-  @NotNull
+  @NotNull(message = "The updated at field is required.")
   @LastModifiedDate
   @Column("updated_at")
   @JsonProperty("updated_at")
