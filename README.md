@@ -81,6 +81,14 @@ http://localhost:8000/api/v1/docs
 
 The hostname and port of the server are defined by the `.env` file in the project root directory.
 
+## Roadmap
+
+New features:
+
+* Partial updates
+* Synchronous executions
+* Python runtime
+
 ## Copyright and license
 
 Copyright (c) 2021, Danilo Peixoto. All rights reserved.
