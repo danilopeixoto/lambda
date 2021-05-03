@@ -87,6 +87,8 @@ New features:
 
 * Partial updates
 * Synchronous executions
+* Package dependencies
+* One-shot container runtimes
 * Python runtime
 
 ## Copyright and license
